@@ -32,7 +32,7 @@ export class HeroDetail implements OnInit {
   }
 
   getHero(): void {
-    const id = Number(this.route.snapshot.paramMap.get('id'));
+    const id = String(this.route.snapshot.paramMap.get('id'));
     this.heroService.getHero(id)
       .subscribe(hero => {
         this.hero = hero;
@@ -52,5 +52,21 @@ export class HeroDetail implements OnInit {
 
   goBack(): void {
     this.location.back();
+  }
+
+  save(): void {
+    if (this.hero && this.heroForm.valid) {
+      const updatedHero = { ...this.hero, ...this.heroForm.value };
+      this.heroService.updateHero(updatedHero).then(() => this.goBack());
+    } else {
+      this.heroForm.markAllAsTouched();
+    }
+  }
+
+  pointsRestants(): number {
+    if (!this.heroForm) return 0;
+    const { attack, dodging, damage, hp } = this.heroForm.value;
+    const sum = Number(attack || 0) + Number(dodging || 0) + Number(damage || 0) + Number(hp || 0);
+    return 40 - sum;
   }
 }
