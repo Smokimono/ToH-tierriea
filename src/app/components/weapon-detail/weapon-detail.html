@@ -22,6 +22,21 @@
       <label for="hp">Points de vie : </label>
       <input id="hp" formControlName="hp" placeholder="hp">
     </div>
+    @if (weaponForm.errors && (weaponForm.dirty || weaponForm.touched)) {
+      <div>
+        @if (this.weaponForm.errors["valueOutOfRange"]) {
+          <div class="validator-error">
+            Chaque caractéristique doit être comprise entre -5 et 5.
+          </div>
+        }
+        @if (this.weaponForm.errors["sumNotEqualToZero"]) {
+          <div class="validator-error">
+            La somme des caractéristiques doit être égale à 0.
+          </div>
+        }
+      </div>
+    }
+
     <button type="submit" [disabled]="weaponForm.invalid" [title]="pointsRestants() > 0 ? pointsRestants() + ' points restants à répartir' : ''">Enregistrer</button>
     <button type="button" (click)="goBack()">go back</button>
   </form>

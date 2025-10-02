@@ -49,4 +49,8 @@ export class Heroes implements OnInit {
     this.newHeroName = '';
     this.showCreateForm = false;
   }
+
+  // addWeaponToHero(hero: HeroInterface): void {
+  //   this.heroService.addWeaponToHero(hero);
+  // }
 }

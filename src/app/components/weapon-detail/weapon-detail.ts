@@ -36,7 +36,9 @@ export class WeaponDetail implements  OnInit {
     this.weaponService.getWeapon(id)
       .subscribe(weapon => {
         this.weapon = weapon;
-        this.initForm(weapon);
+        if (weapon) {
+          this.initForm(weapon);
+        }
       });
   }
 
@@ -48,6 +50,8 @@ export class WeaponDetail implements  OnInit {
       damage: [weapon.damage, Validators.required],
       hp: [weapon.hp, Validators.required]
     }, { validators: WeaponsStatsAreCoherent });
+    this.weaponForm.valueChanges.subscribe(() => {
+    });
   }
 
   goBack(): void {

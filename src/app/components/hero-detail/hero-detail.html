@@ -22,7 +22,26 @@
       <label for="hp">Points de vie : </label>
       <input id="hp" formControlName="hp" placeholder="hp">
     </div>
-    <button type="submit" [disabled]="heroForm.invalid" [title]="pointsRestants() > 0 ? pointsRestants() + ' points restants à répartir' : ''">Enregistrer</button>
+    @if (heroForm.errors && (heroForm.dirty || heroForm.touched)) {
+      <div>
+        @if (this.heroForm.errors["valueTooLow"]) {
+          <div class="validator-error">
+            Chaque caractéristique doit être supérieure ou égale à 1.
+          </div>
+        }
+        @if (this.heroForm.errors["sumTooHigh"]) {
+          <div class="validator-error">
+            La somme des caractéristiques ne doit pas dépasser 40.
+          </div>
+        }
+      </div>
+    }
+    @if (pointsRestants() > 0) {
+      <div class="points-restants">
+        {{ pointsRestants() }} points restants à répartir
+      </div>
+    }
+    <button type="submit" [disabled]="heroForm.invalid">Enregistrer</button>
     <button type="button" (click)="goBack()">go back</button>
   </form>
 }
