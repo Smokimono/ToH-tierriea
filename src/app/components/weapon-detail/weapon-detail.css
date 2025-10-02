@@ -3,14 +3,14 @@ h2 {
   font-size: 2rem;
   font-weight: bold;
   letter-spacing: 2px;
-  color: #1976d2;
+  color: #b71c1c;
 }
 
 form {
-  background: #f4f8fb;
+  background: #fff8ee;
   border-radius: 16px;
   padding: 24px 28px 20px 28px;
-  box-shadow: 0 4px 18px rgba(25, 118, 210, 0.08);
+  box-shadow: 0 4px 18px rgba(183, 28, 28, 0.07);
   max-width: 420px;
   margin: 0 auto;
   display: flex;
@@ -27,12 +27,12 @@ form div {
 
 form span {
   font-weight: bold;
-  color: #555;
+  color: #a84311;
 }
 
 label {
   font-weight: 500;
-  color: #333;
+  color: #a84311;
   min-width: 120px;
   margin-right: 10px;
 }
@@ -42,7 +42,7 @@ input[type="number"],
 input {
   flex: 1;
   padding: 8px 13px;
-  border: 1px solid #bdbdbd;
+  border: 1px solid #e0a800;
   border-radius: 8px;
   font-size: 1rem;
   transition: border-color 0.2s;
@@ -51,12 +51,12 @@ input {
 }
 
 input:focus {
-  border-color: #1976d2;
+  border-color: #fbc02d;
   outline: none;
 }
 
 button[type="submit"] {
-  background: #1976d2;
+  background: #fbc02d;
   color: #fff;
   border: none;
   padding: 10px 22px;
@@ -65,23 +65,23 @@ button[type="submit"] {
   font-weight: 500;
   cursor: pointer;
   margin-right: 10px;
-  box-shadow: 0 2px 8px rgba(25, 118, 210, 0.09);
+  box-shadow: 0 2px 8px rgba(251, 192, 45, 0.09);
   transition: background 0.2s, box-shadow 0.2s;
 }
 
 button[type="submit"]:disabled {
-  background: #bdbdbd;
+  background: #e0a800;
   cursor: not-allowed;
   box-shadow: none;
 }
 
 button[type="submit"]:hover:not(:disabled) {
-  background: #1565c0;
-  box-shadow: 0 4px 12px rgba(25, 118, 210, 0.14);
+  background: #ffd600;
+  box-shadow: 0 4px 12px rgba(251, 192, 45, 0.14);
 }
 
 button[type="button"] {
-  background: #e53935;
+  background: #616161;
   color: #fff;
   border: none;
   padding: 10px 16px;
@@ -93,5 +93,5 @@ button[type="button"] {
 }
 
 button[type="button"]:hover {
-  background: #b71c1c;
+  background: #212121;
 }

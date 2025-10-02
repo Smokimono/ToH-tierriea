@@ -1,0 +1,22 @@
+<p>weapon works!</p>
+
+<ul class="weapons">
+  @for (weapon of weapons; track weapon.id) {
+    <li>
+      <a routerLink="/weapondetail/{{weapon.id}}">
+        <span class="badge">{{weapon.id}}</span> {{weapon.name}}
+      </a>
+    </li>
+  }
+</ul>
+
+
+<button type="button" (click)="showCreateForm = true" class="create-hero-btn">Créer une arme</button>
+
+@if (showCreateForm) {
+  <div class="create-hero-form">
+    <input type="text" [(ngModel)]="newWeaponName" placeholder="Nom de l'arme" />
+    <button type="button" (click)="newWeapon()" [disabled]="!newWeaponName.trim()">Valider</button>
+    <button type="button" (click)="showCreateForm = false">Annuler</button>
+  </div>
+}

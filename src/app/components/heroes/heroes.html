@@ -7,6 +7,14 @@
       </a>
     </li>
   }
-
 </ul>
 
+<button type="button" (click)="showCreateForm = true" class="create-hero-btn">Créer un héros</button>
+
+@if (showCreateForm) {
+  <div class="create-hero-form">
+    <input type="text" [(ngModel)]="newHeroName" placeholder="Nom du héros" />
+    <button type="button" (click)="newHero()" [disabled]="!newHeroName.trim()">Valider</button>
+    <button type="button" (click)="showCreateForm = false">Annuler</button>
+  </div>
+}

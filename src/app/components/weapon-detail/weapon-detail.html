@@ -1,0 +1,28 @@
+@if (weapon && weaponForm) {
+  <h2>{{ weaponForm.value.name | uppercase }} Details</h2>
+  <form [formGroup]="weaponForm" (ngSubmit)="save()">
+    <div><span>id: </span>{{ weapon.id }}</div>
+    <div>
+      <label for="name">weapon name: </label>
+      <input id="name" formControlName="name" placeholder="name">
+    </div>
+    <div>
+      <label for="attack">Attaque : </label>
+      <input id="attack" formControlName="attack" placeholder="attack">
+    </div>
+    <div>
+      <label for="dodging">Esquive : </label>
+      <input id="dodging" formControlName="dodging" placeholder="dodging">
+    </div>
+    <div>
+      <label for="damage">Damage : </label>
+      <input id="damage" formControlName="damage" placeholder="damage">
+    </div>
+    <div>
+      <label for="hp">Points de vie : </label>
+      <input id="hp" formControlName="hp" placeholder="hp">
+    </div>
+    <button type="submit" [disabled]="weaponForm.invalid" [title]="pointsRestants() > 0 ? pointsRestants() + ' points restants à répartir' : ''">Enregistrer</button>
+    <button type="button" (click)="goBack()">go back</button>
+  </form>
+}

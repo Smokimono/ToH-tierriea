@@ -15,9 +15,5 @@ export const statsAreCoherent: ValidatorFn = (group: AbstractControl): Validatio
     console.log('[statsAreCoherent] sumTooHigh:', { attack, dodging, damage, hp, sum });
     return { sumTooHigh: true };
   }
-  if (sum < 40) {
-    console.log('[statsAreCoherent] sumTooLow:', { attack, dodging, damage, hp, sum });
-    return { sumTooLow: true };
-  }
   return null;
 };

@@ -1,15 +1,15 @@
 import { Injectable } from '@angular/core';
 import {HeroInterface} from "../Data/heroInterface";
-import {HEROES} from "../Data/mock-heroes";
 import {Observable, of} from "rxjs";
 import {MessageService} from "./message"
 import {FirebaseApp} from '@angular/fire/app';
 import {addDoc, collection, collectionData, deleteDoc, doc, docData, Firestore, setDoc} from '@angular/fire/firestore';
+import {WeaponInterface} from '../Data/weaponInterface';
 
 @Injectable({
   providedIn: 'root'
 })
-export class HeroService {
+export class WeaponService {
   constructor(private messageService: MessageService, private firestore: Firestore) { }
 
   /*getHeroes(): Observable<HeroInterface[]> {
@@ -18,7 +18,7 @@ export class HeroService {
   }*/
 
   // URL d'accès aux documents sur Firebase
-  private static url = 'heroes';
+  private static url = 'weapon';
 
 
   // getHeroes(): Observable<HeroInterface[]> {
@@ -36,13 +36,13 @@ export class HeroService {
   // }
 
 
-  getHeroes(): Observable<HeroInterface[]> {
+  getWeapons(): Observable<WeaponInterface[]> {
 // get a reference to the hero collection
-    const heroCollection = collection(this.firestore, HeroService.url);
+    const weaponCollection = collection(this.firestore, WeaponService.url);
 ///////////
 // Solution 1 : Transformation en une liste d'objets "prototype" de type Hero
 // get documents (data) from the collection using collectionData
-    return collectionData(heroCollection, { idField: 'id' }) as Observable<HeroInterface[]>;
+    return collectionData(weaponCollection, { idField: 'id' }) as Observable<WeaponInterface[]>;
   }
 
   // getHero(id: number): Observable<HeroInterface> {
@@ -53,35 +53,35 @@ export class HeroService {
   //   return of(hero);
   // }
 
-  getHero(id: string): Observable<HeroInterface> {
+  getWeapon(id: string): Observable<WeaponInterface> {
 // Récupération du DocumentReference
-    const heroDocument = doc(this.firestore, HeroService.url + "/" + id);
+    const weaponDocument = doc(this.firestore, WeaponService.url + "/" + id);
 ///////////
 // Solution 1 : Transformation en un objet "prototype" de type Hero
 // get documents (data) from the collection using collectionData
-    return docData(heroDocument, { idField: 'id' }) as Observable<HeroInterface>;
+    return docData(weaponDocument, { idField: 'id' }) as Observable<WeaponInterface>;
   }
   deleteHero(id: string): Promise<void> {
 // Récupération du DocumentReference
-    const heroDocument = doc(this.firestore, HeroService.url + "/" + id);
+    const heroDocument = doc(this.firestore, WeaponService.url + "/" + id);
 //
     return deleteDoc(heroDocument);
   }
-  updateHero(hero: HeroInterface): Promise<void> {
-    const heroDocument = doc(this.firestore, HeroService.url + '/' + hero.id);
+  updateWeapon(weapon: WeaponInterface): Promise<void> {
+    const weaponDocument = doc(this.firestore, WeaponService.url + '/' + weapon.id);
     // On utilise setDoc pour écraser le document avec les nouvelles valeurs
-    return setDoc(heroDocument, hero);
+    return setDoc(weaponDocument, weapon);
   }
-  addHero(hero: HeroInterface): Promise<HeroInterface> {
+  addWeapon(weapon: WeaponInterface): Promise<WeaponInterface> {
 
     // get a reference to the hero collection
-    const heroCollection = collection(this.firestore, HeroService.url);
+    const weaponCollection = collection(this.firestore, WeaponService.url);
 
     let heroPromise: Promise<HeroInterface> = new Promise( (resolve, reject) => {
-      addDoc(heroCollection, HeroService.transformationToJSON(hero)).then(
+      addDoc(weaponCollection, WeaponService.transformationToJSON(weapon)).then(
         heroDocument => { // success
-          hero.id = heroDocument.id;
-          resolve(hero);
+          weapon.id = heroDocument.id;
+          resolve(weapon);
         },
         msg => { // error
           reject(msg);
@@ -92,14 +92,14 @@ export class HeroService {
     return heroPromise;
   }
 
-  private static transformationToJSON(hero: HeroInterface): any {
+  private static transformationToJSON(weapon: WeaponInterface): any {
 
     ///////
     // Il n'est pas nécessaire d'evnoyer l'id dans le corps du document donc suppression de cette information
     ///////
 
     // Solution 1 : création d'un JSON object "ad hoc" (sans la propriété id)
-    let newHeroJSON = {name: hero.name, attack: hero.attack, dodging: hero.dodging, damage: hero.damage, hp: hero.hp, idWeapon: hero.idWeapon};
+    let newHeroJSON = {name: weapon.name, attack: weapon.attack, dodging: weapon.dodging, damage: weapon.damage, hp: weapon.hp};
 
     // Solution 2 : création d'un JSON object en supprimant la propriété id
     // let newHeroJSON = Object.assign({}, hero);   // Cette solution met l'id dans firebase au niveau du document

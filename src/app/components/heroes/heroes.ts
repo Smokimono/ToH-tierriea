@@ -23,8 +23,11 @@ import {RouterLink} from '@angular/router';
 export class Heroes implements OnInit {
   heroes: HeroInterface[] = [];
   selectedHero?: HeroInterface;
+  showCreateForm = false;
+  newHeroName = '';
 
-  constructor(private heroService: HeroService, private messageService: MessageService) {}
+  constructor(private heroService: HeroService, private messageService: MessageService) {
+  }
 
   ngOnInit(): void {
     this.getHeroes();
@@ -38,6 +41,12 @@ export class Heroes implements OnInit {
   getHeroes(): void {
     this.heroService.getHeroes().subscribe(heroes=> this.heroes = heroes);
   }
+
+  newHero() {
+    if (!this.newHeroName.trim()) return;
+    let hero: HeroInterface = {id: '', name: this.newHeroName.trim(), attack: 10, dodging: 10, damage: 10, hp: 10, idWeapon:""};
+    this.heroService.addHero(hero);
+    this.newHeroName = '';
+    this.showCreateForm = false;
+  }
 }
-
-

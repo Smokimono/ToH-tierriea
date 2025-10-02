@@ -1,4 +1,4 @@
-.heroes {
+.weapons {
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
@@ -7,7 +7,7 @@
   list-style: none;
 }
 
-.heroes li {
+.weapons li {
   display: inline-flex;
   align-items: center;
   background: #f5f5f5;
@@ -20,7 +20,7 @@
   white-space: nowrap;
 }
 
-.heroes li a {
+.weapons li a {
   text-decoration: none;
   color: #333;
   display: inline-flex;
@@ -28,13 +28,13 @@
   gap: 8px;
 }
 
-.heroes li:hover {
+.weapons li:hover {
   box-shadow: 0 4px 16px rgba(0,0,0,0.10);
-  background: #e0f7fa;
+  background: #ffe082; /* couleur différente pour les armes */
 }
 
 .badge {
-  background: #1976d2;
+  background: #b71c1c;
   color: #fff;
   border-radius: 12px;
   padding: 2px 10px;
@@ -47,7 +47,7 @@
   display: inline-block;
   margin-top: 10px;
   padding: 8px 18px;
-  background: #43a047;
+  background: #fbc02d;
   color: #fff;
   border: none;
   border-radius: 18px;
@@ -57,7 +57,7 @@
 }
 
 .create-hero-btn:hover {
-  background: #388e3c;
+  background: #f57c00;
 }
 
 .create-hero-form {
@@ -78,7 +78,7 @@
   padding: 7px 16px;
   border-radius: 12px;
   border: none;
-  background: #1976d2;
+  background: #b71c1c;
   color: #fff;
   font-size: 15px;
   cursor: pointer;
@@ -86,7 +86,7 @@
 }
 
 .create-hero-form button:last-child {
-  background: #e53935;
+  background: #616161;
 }
 
 .create-hero-form button:hover {
