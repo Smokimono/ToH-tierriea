@@ -91,6 +91,10 @@ export class HeroService {
     //
     return heroPromise;
   }
+  updateHeroWeapon(id: string, idWeapon: string | null): Promise<void> {
+    const heroDocument = doc(this.firestore, HeroService.url + '/' + id);
+    return setDoc(heroDocument, { idWeapon }, { merge: true });
+  }
 
   private static transformationToJSON(hero: HeroInterface): any {
 

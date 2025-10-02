@@ -44,4 +44,34 @@
     <button type="submit" [disabled]="heroForm.invalid">Enregistrer</button>
     <button type="button" (click)="goBack()">go back</button>
   </form>
+
+  <section class="equip-weapon">
+    <h3>Équiper une arme</h3>
+    <ul>
+      @for (weapon of weapons; track weapon.id) {
+        <li>
+          <span>{{ weapon.name }} (Att: {{ weapon.attack }}, Esq: {{ weapon.dodging }}, Dég: {{ weapon.damage }}, PV: {{ weapon.hp }})</span>
+          <button type="button" (click)="equipWeapon(weapon)" [disabled]="!canEquipWeapon(weapon)">
+            Équiper
+          </button>
+        </li>
+      }
+    </ul>
+    @if (equippedWeapon) {
+      <div class="weapon-bonus">
+        <strong>Arme équipée :</strong> {{ equippedWeapon.name }}<br>
+        <span>Bonus/Malus : Att: {{ equippedWeapon.attack }}, Esq: {{ equippedWeapon.dodging }}, Dég: {{ equippedWeapon.damage }}, PV: {{ equippedWeapon.hp }}</span>
+      </div>
+      <div class="final-stats">
+        <strong>Stats finales :</strong>
+        Attaque : {{ getFinalStats().attack }}<br>
+        Esquive : {{ getFinalStats().dodging }}<br>
+        Dégâts : {{ getFinalStats().damage }}<br>
+        Points de vie : {{ getFinalStats().hp }}
+      </div>
+    }
+    @if (errorMessage) {
+      <div class="validator-error">{{ errorMessage }}</div>
+    }
+  </section>
 }

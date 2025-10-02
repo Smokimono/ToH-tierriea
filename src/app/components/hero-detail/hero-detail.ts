@@ -5,6 +5,8 @@ import { HeroInterface } from '../../Data/heroInterface';
 import { HeroService } from '../../services/hero';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { statsAreCoherent } from '../../validators/validator-stats';
+import { WeaponInterface } from '../../Data/weaponInterface';
+import { WeaponService } from '../../services/weapon';
 
 @Component({
   selector: 'app-hero-detail',
@@ -19,16 +21,21 @@ import { statsAreCoherent } from '../../validators/validator-stats';
 export class HeroDetail implements OnInit {
   hero: HeroInterface | undefined;
   heroForm!: FormGroup;
+  weapons: WeaponInterface[] = [];
+  equippedWeapon: WeaponInterface | null = null;
+  errorMessage: string = '';
 
   constructor(
     private route: ActivatedRoute,
     private heroService: HeroService,
     private location: Location,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private weaponService: WeaponService
   ) {}
 
   ngOnInit(): void {
     this.getHero();
+    this.getWeapons();
   }
 
   getHero(): void {
@@ -38,6 +45,12 @@ export class HeroDetail implements OnInit {
         this.hero = hero;
         this.initForm(hero);
       });
+  }
+
+  getWeapons(): void {
+    this.weaponService.getWeapons().subscribe(weapons => {
+      this.weapons = weapons;
+    });
   }
 
   initForm(hero: HeroInterface): void {
@@ -50,13 +63,49 @@ export class HeroDetail implements OnInit {
     }, { validators: statsAreCoherent });
   }
 
+  canEquipWeapon(weapon: WeaponInterface): boolean {
+    if (!this.hero) return false;
+    const att = this.hero.attack + weapon.attack;
+    const esq = this.hero.dodging + weapon.dodging;
+    const deg = this.hero.damage + weapon.damage;
+    const pv = this.hero.hp + weapon.hp;
+    return att >= 1 && esq >= 1 && deg >= 1 && pv >= 1;
+  }
+
+  async equipWeapon(weapon: WeaponInterface): Promise<void> {
+    if (!this.hero) return;
+    if (this.canEquipWeapon(weapon)) {
+      try {
+        await this.heroService.updateHeroWeapon(this.hero.id, weapon.id);
+        this.equippedWeapon = weapon;
+        this.hero.idWeapon = weapon.id;
+        this.errorMessage = '';
+      } catch (e) {
+        this.errorMessage = "Erreur lors de l'enregistrement de l'arme équipée.";
+      }
+    } else {
+      this.errorMessage = "Impossible d'équiper cette arme : une caractéristique passerait en dessous de 1.";
+    }
+  }
+
+  getFinalStats(): any {
+    if (!this.hero) return null;
+    const weapon = this.equippedWeapon;
+    return {
+      attack: this.hero.attack + (weapon?.attack || 0),
+      dodging: this.hero.dodging + (weapon?.dodging || 0),
+      damage: this.hero.damage + (weapon?.damage || 0),
+      hp: this.hero.hp + (weapon?.hp || 0)
+    };
+  }
+
   goBack(): void {
     this.location.back();
   }
 
   save(): void {
     if (this.hero && this.heroForm.valid) {
-      const updatedHero = { ...this.hero, ...this.heroForm.value };
+      const updatedHero = { ...this.hero, ...this.heroForm.value, idWeapon: this.equippedWeapon?.id || null };
       this.heroService.updateHero(updatedHero).then(() => this.goBack());
     } else {
       this.heroForm.markAllAsTouched();
