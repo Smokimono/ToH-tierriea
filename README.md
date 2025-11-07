@@ -58,6 +58,19 @@ Angular CLI does not come with an end-to-end testing framework by default. You c
 
 For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
 
+## Upload d'images héros
+
+- Les images uploadées sont stockées dans le dossier `uploads/heroes/<heroId>/` à la racine du projet.
+- Un petit serveur HTTP local sert ces fichiers et gère l'upload via `POST /api/heroes/:id/photo`.
+
+Démarrage:
+
+```sh
+npm run upload:server
+npm start
+```
+
+Ensuite, utilisez la page de détail d'un héros pour glisser-déposer une image ou en choisir une via le champ fichier.
 
 ## TODO next time 
 Finir composant détail, ajouter css et boutons de retour

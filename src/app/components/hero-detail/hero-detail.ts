@@ -7,6 +7,7 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormsModule } 
 import { statsAreCoherent } from '../../validators/validator-stats';
 import { WeaponInterface } from '../../Data/weaponInterface';
 import { WeaponService } from '../../services/weapon';
+import { HeroImageService } from '../../services/hero-image';
 
 @Component({
   selector: 'app-hero-detail',
@@ -24,13 +25,18 @@ export class HeroDetail implements OnInit {
   weapons: WeaponInterface[] = [];
   equippedWeapon: WeaponInterface | null = null;
   errorMessage: string = '';
+  isDragOver: boolean = false;
+  uploadProgress: number = 0; // utilisé pour éventuelle extension
+  uploading: boolean = false;
+  previewUrl: string | null = null;
 
   constructor(
     private route: ActivatedRoute,
     private heroService: HeroService,
     private location: Location,
     private fb: FormBuilder,
-    private weaponService: WeaponService
+    private weaponService: WeaponService,
+    private heroImageService: HeroImageService
   ) {}
 
   ngOnInit(): void {
@@ -124,5 +130,63 @@ export class HeroDetail implements OnInit {
     const { attack, dodging, damage, hp } = this.heroForm.value;
     const sum = parseInt(attack ?? 0, 10) + parseInt(dodging ?? 0, 10) + parseInt(damage ?? 0, 10) + parseInt(hp ?? 0, 10);
     return 40 - sum;
+  }
+
+  onDragOver(event: DragEvent): void { event.preventDefault(); this.isDragOver = true; }
+  onDragLeave(event: DragEvent): void { event.preventDefault(); this.isDragOver = false; }
+  onDrop(event: DragEvent): void {
+    event.preventDefault();
+    this.isDragOver = false;
+    if (!event.dataTransfer || !event.dataTransfer.files.length || !this.hero) return;
+    this.processFile(event.dataTransfer.files[0]);
+  }
+  onFileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (!input.files || !input.files.length || !this.hero) return;
+    this.processFile(input.files[0]);
+  }
+  private processFile(file: File): void {
+    if (!file.type.startsWith('image/')) { this.errorMessage = 'Le fichier doit être une image.'; return; }
+    this.errorMessage = '';
+    this.previewUrl = URL.createObjectURL(file);
+    this.uploading = true;
+    this.heroImageService.uploadHeroImage(this.hero!.id, file).subscribe({
+      next: url => {
+        if (this.hero) {
+          this.hero.photoURL = url;
+          this.heroService.updateHeroPhoto(this.hero.id, url).catch(() => {
+            // on ignore l'erreur d'enregistrement pour ne pas bloquer l'affichage immédiat
+          });
+        }
+        this.uploading = false;
+        this.previewUrl = null;
+      },
+      error: () => {
+        this.errorMessage = "Erreur lors de l'upload de l'image.";
+        this.uploading = false;
+      }
+    });
+  }
+
+  removePhoto(): void {
+    if (!this.hero || !this.hero.photoURL) return;
+    const url = this.hero.photoURL;
+    this.heroImageService.deleteHeroImage(this.hero.id, url).subscribe({
+      next: () => {
+        this.heroService.updateHeroPhoto(this.hero!.id, null).finally(() => {
+          if (this.hero) this.hero.photoURL = undefined;
+        });
+      },
+      error: () => {
+        this.errorMessage = "Impossible de supprimer l'image.";
+      }
+    });
+  }
+
+  openFilePicker(input: HTMLInputElement, event?: Event): void {
+    if (event) event.stopPropagation();
+    // Réinitialiser la valeur pour permettre de re-sélectionner le même fichier
+    input.value = '';
+    input.click();
   }
 }

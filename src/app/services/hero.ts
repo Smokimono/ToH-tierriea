@@ -95,6 +95,10 @@ export class HeroService {
     const heroDocument = doc(this.firestore, HeroService.url + '/' + id);
     return setDoc(heroDocument, { idWeapon }, { merge: true });
   }
+  updateHeroPhoto(id: string, photoURL: string | null): Promise<void> {
+    const heroDocument = doc(this.firestore, HeroService.url + '/' + id);
+    return setDoc(heroDocument, { photoURL }, { merge: true });
+  }
 
   private static transformationToJSON(hero: HeroInterface): any {
 

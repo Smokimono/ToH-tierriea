@@ -1,55 +1,64 @@
 @if (hero && heroForm) {
   <h2>{{ heroForm.value.name | uppercase }} Details</h2>
-  <form [formGroup]="heroForm" (ngSubmit)="save()">
-    <div><span>id: </span>{{ hero.id }}</div>
-    <div>
-      <label for="name">Hero name: </label>
-      <input id="name" formControlName="name" placeholder="name">
+  <div class="hero-detail-layout">
+    <div class="image-column">
+      @if (hero?.photoURL) {
+        <div class="image-box">
+          <img [src]="hero.photoURL" alt="Photo du héros" />
+          <button type="button" class="remove-photo-btn" (click)="removePhoto()" aria-label="Supprimer la photo">×</button>
+        </div>
+      } @else {
+        <div class="image-placeholder" title="Clique pour ajouter une photo">
+          <button type="button" class="add-photo-btn" (click)="openFilePicker(fileInput, $event)">Ajouter une photo</button>
+          <input #fileInput type="file" accept="image/*" (change)="onFileSelected($event)" hidden>
+        </div>
+      }
+      @if (previewUrl) {
+        <div class="preview-image"><p>Prévisualisation :</p><img [src]="previewUrl" alt="Preview"></div>
+      }
     </div>
-    <div>
-      <label for="attack">Attaque : </label>
-      <input id="attack" formControlName="attack" placeholder="attack">
-    </div>
-    <div>
-      <label for="dodging">Esquive : </label>
-      <input id="dodging" formControlName="dodging" placeholder="dodging">
-    </div>
-    <div>
-      <label for="damage">Damage : </label>
-      <input id="damage" formControlName="damage" placeholder="damage">
-    </div>
-    <div>
-      <label for="hp">Points de vie : </label>
-      <input id="hp" formControlName="hp" placeholder="hp">
-    </div>
-    @if (heroForm.errors && (heroForm.dirty || heroForm.touched)) {
-      <div>
-        @if (this.heroForm.errors["valueTooLow"]) {
-          <div class="validator-error">
-            Chaque caractéristique doit être supérieure ou égale à 1.
+
+    <div class="form-column">
+      <form [formGroup]="heroForm" (ngSubmit)="save()">
+        <div><span>id: </span>{{ hero.id }}</div>
+        <div>
+          <label for="name">Hero name: </label>
+          <input id="name" formControlName="name" placeholder="name">
+        </div>
+        <div>
+          <label for="attack">Attaque : </label>
+          <input id="attack" formControlName="attack" placeholder="attack">
+        </div>
+        <div>
+          <label for="dodging">Esquive : </label>
+          <input id="dodging" formControlName="dodging" placeholder="dodging">
+        </div>
+        <div>
+          <label for="damage">Damage : </label>
+          <input id="damage" formControlName="damage" placeholder="damage">
+        </div>
+        <div>
+          <label for="hp">Points de vie : </label>
+          <input id="hp" formControlName="hp" placeholder="hp">
+        </div>
+        @if (heroForm.errors && (heroForm.dirty || heroForm.touched)) {
+          <div>
+            @if (this.heroForm.errors['valueTooLow']) {<div class="validator-error">Chaque caractéristique doit être supérieure ou égale à 1.</div>}
+            @if (this.heroForm.errors['sumTooHigh']) {<div class="validator-error">La somme des caractéristiques ne doit pas dépasser 40.</div>}
           </div>
         }
-        @if (this.heroForm.errors["sumTooHigh"]) {
-          <div class="validator-error">
-            La somme des caractéristiques ne doit pas dépasser 40.
-          </div>
-        }
-      </div>
-    }
-    @if (pointsRestants() > 0) {
-      <div class="points-restants">
-        {{ pointsRestants() }} points restants à répartir
-      </div>
-    }
-    <button type="submit" [disabled]="heroForm.invalid">Enregistrer</button>
-    <button type="button" (click)="goBack()">go back</button>
-  </form>
+        @if (pointsRestants() > 0) {<div class="points-restants">{{ pointsRestants() }} points restants à répartir</div>}
+        <button type="submit" [disabled]="heroForm.invalid">Enregistrer</button>
+        <button type="button" (click)="goBack()">go back</button>
+      </form>
+    </div>
+  </div>
 
   <section class="equip-weapon">
     @if (equippedWeapon) {
       <div class="weapon-bonus">
         <h3>Arme équipée : {{ equippedWeapon.name }}</h3>
-        <span> <strong>Stats de l'arme :</strong><br>
+        <span><strong>Stats de l'arme :</strong><br>
           Attaque: {{ equippedWeapon.attack }}<br>
           Esquive: {{ equippedWeapon.dodging }}<br>
           Dégâts: {{ equippedWeapon.damage }}<br>
@@ -57,28 +66,22 @@
         </span>
       </div>
       <div class="final-stats">
-        <strong>Stats finales du héro :</strong>
-        <br>
+        <strong>Stats finales du héro :</strong><br>
         Attaque : {{ getFinalStats().attack }}<br>
         Esquive : {{ getFinalStats().dodging }}<br>
         Dégâts : {{ getFinalStats().damage }}<br>
         PV : {{ getFinalStats().hp }}
       </div>
     }
-    @if (errorMessage) {
-      <div class="validator-error">{{ errorMessage }}</div>
-    }
+    @if (errorMessage) { <div class="validator-error">{{ errorMessage }}</div> }
     <h3>Équiper une arme</h3>
     <ul>
       @for (weapon of weapons; track weapon.id) {
         <li>
           <span>{{ weapon.name }} (Att: {{ weapon.attack }}, Esq: {{ weapon.dodging }}, Dég: {{ weapon.damage }}, PV: {{ weapon.hp }})</span>
-          <button type="button" (click)="equipWeapon(weapon)" [disabled]="!canEquipWeapon(weapon)">
-            Équiper
-          </button>
+          <button type="button" (click)="equipWeapon(weapon)" [disabled]="!canEquipWeapon(weapon)">Équiper</button>
         </li>
       }
     </ul>
-
   </section>
 }
