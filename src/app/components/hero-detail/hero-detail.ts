@@ -44,6 +44,13 @@ export class HeroDetail implements OnInit {
       .subscribe(hero => {
         this.hero = hero;
         this.initForm(hero);
+        if (hero.idWeapon) {
+          this.weaponService.getWeapon(hero.idWeapon).subscribe(weapon => {
+            this.equippedWeapon = weapon;
+          });
+        } else {
+          this.equippedWeapon = null;
+        }
       });
   }
 
@@ -65,10 +72,10 @@ export class HeroDetail implements OnInit {
 
   canEquipWeapon(weapon: WeaponInterface): boolean {
     if (!this.hero) return false;
-    const att = this.hero.attack + weapon.attack;
-    const esq = this.hero.dodging + weapon.dodging;
-    const deg = this.hero.damage + weapon.damage;
-    const pv = this.hero.hp + weapon.hp;
+    const att = parseInt(this.hero.attack as any, 10) + parseInt(weapon.attack as any, 10);
+    const esq = parseInt(this.hero.dodging as any, 10) + parseInt(weapon.dodging as any, 10);
+    const deg = parseInt(this.hero.damage as any, 10) + parseInt(weapon.damage as any, 10);
+    const pv = parseInt(this.hero.hp as any, 10) + parseInt(weapon.hp as any, 10);
     return att >= 1 && esq >= 1 && deg >= 1 && pv >= 1;
   }
 
@@ -92,10 +99,10 @@ export class HeroDetail implements OnInit {
     if (!this.hero) return null;
     const weapon = this.equippedWeapon;
     return {
-      attack: this.hero.attack + (weapon?.attack || 0),
-      dodging: this.hero.dodging + (weapon?.dodging || 0),
-      damage: this.hero.damage + (weapon?.damage || 0),
-      hp: this.hero.hp + (weapon?.hp || 0)
+      attack: parseInt(this.hero.attack as any, 10) + parseInt(weapon?.attack as any ?? 0, 10),
+      dodging: parseInt(this.hero.dodging as any, 10) + parseInt(weapon?.dodging as any ?? 0, 10),
+      damage: parseInt(this.hero.damage as any, 10) + parseInt(weapon?.damage as any ?? 0, 10),
+      hp: parseInt(this.hero.hp as any, 10) + parseInt(weapon?.hp as any ?? 0, 10)
     };
   }
 
@@ -115,7 +122,7 @@ export class HeroDetail implements OnInit {
   pointsRestants(): number {
     if (!this.heroForm) return 0;
     const { attack, dodging, damage, hp } = this.heroForm.value;
-    const sum = Number(attack || 0) + Number(dodging || 0) + Number(damage || 0) + Number(hp || 0);
+    const sum = parseInt(attack ?? 0, 10) + parseInt(dodging ?? 0, 10) + parseInt(damage ?? 0, 10) + parseInt(hp ?? 0, 10);
     return 40 - sum;
   }
 }

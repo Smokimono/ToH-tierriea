@@ -25,6 +25,7 @@ export class Heroes implements OnInit {
   selectedHero?: HeroInterface;
   showCreateForm = false;
   newHeroName = '';
+  searchTerm: string = '';
 
   constructor(private heroService: HeroService, private messageService: MessageService) {
   }
@@ -53,4 +54,14 @@ export class Heroes implements OnInit {
   // addWeaponToHero(hero: HeroInterface): void {
   //   this.heroService.addWeaponToHero(hero);
   // }
+  get filteredHeroes(): HeroInterface[] {
+    if (!this.searchTerm.trim()) return this.heroes;
+    const term = this.searchTerm.trim().toLowerCase();
+    return this.heroes.filter(hero =>
+      hero.name.toLowerCase().includes(term)
+    );
+  }
+  sortBy(stat: keyof HeroInterface) {
+    this.heroes = [...this.heroes].sort((a, b) => parseInt(b[stat] as any, 10) - parseInt(a[stat] as any, 10));
+  }
 }

@@ -1,7 +1,13 @@
 <p>weapon works!</p>
-
+<input type="text" [(ngModel)]="searchTerm" placeholder="Rechercher une arme" class="search-bar" />
+<div class="sort-btns">
+  <button type="button" (click)="sortBy('attack')">Trier par Attaque</button>
+  <button type="button" (click)="sortBy('dodging')">Trier par Esquive</button>
+  <button type="button" (click)="sortBy('damage')">Trier par Dégâts</button>
+  <button type="button" (click)="sortBy('hp')">Trier par PV</button>
+</div>
 <ul class="weapons">
-  @for (weapon of weapons; track weapon.id) {
+  @for (weapon of filteredWeapons; track weapon.id) {
     <li>
       <a routerLink="/weapondetail/{{weapon.id}}">
         <span class="badge">{{weapon.id}}</span> {{weapon.name}}
@@ -9,7 +15,6 @@
     </li>
   }
 </ul>
-
 
 <button type="button" (click)="showCreateForm = true" class="create-hero-btn">Créer une arme</button>
 

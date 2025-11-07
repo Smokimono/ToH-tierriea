@@ -18,6 +18,7 @@ export class Weapon implements  OnInit {
   showCreateForm = false;
   weapons: WeaponInterface[] = [];
   newWeaponName: string = "";
+  searchTerm: string = '';
 
   constructor(private weaponService: WeaponService, private messageService: MessageService) {}
 
@@ -36,5 +37,16 @@ export class Weapon implements  OnInit {
     this.weaponService.addWeapon(weapon);
     this.newWeaponName = "";
     this.showCreateForm = false;
+  }
+
+  get filteredWeapons(): WeaponInterface[] {
+    if (!this.searchTerm.trim()) return this.weapons;
+    const term = this.searchTerm.trim().toLowerCase();
+    return this.weapons.filter(weapon =>
+      weapon.name.toLowerCase().includes(term)
+    );
+  }
+  sortBy(stat: keyof WeaponInterface) {
+    this.weapons = [...this.weapons].sort((a, b) => parseInt(b[stat] as any, 10) - parseInt(a[stat] as any, 10));
   }
 }

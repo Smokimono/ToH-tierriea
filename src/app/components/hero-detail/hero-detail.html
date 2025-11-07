@@ -46,6 +46,28 @@
   </form>
 
   <section class="equip-weapon">
+    @if (equippedWeapon) {
+      <div class="weapon-bonus">
+        <h3>Arme équipée : {{ equippedWeapon.name }}</h3>
+        <span> <strong>Stats de l'arme :</strong><br>
+          Attaque: {{ equippedWeapon.attack }}<br>
+          Esquive: {{ equippedWeapon.dodging }}<br>
+          Dégâts: {{ equippedWeapon.damage }}<br>
+          PV: {{ equippedWeapon.hp }}
+        </span>
+      </div>
+      <div class="final-stats">
+        <strong>Stats finales du héro :</strong>
+        <br>
+        Attaque : {{ getFinalStats().attack }}<br>
+        Esquive : {{ getFinalStats().dodging }}<br>
+        Dégâts : {{ getFinalStats().damage }}<br>
+        PV : {{ getFinalStats().hp }}
+      </div>
+    }
+    @if (errorMessage) {
+      <div class="validator-error">{{ errorMessage }}</div>
+    }
     <h3>Équiper une arme</h3>
     <ul>
       @for (weapon of weapons; track weapon.id) {
@@ -57,21 +79,6 @@
         </li>
       }
     </ul>
-    @if (equippedWeapon) {
-      <div class="weapon-bonus">
-        <strong>Arme équipée :</strong> {{ equippedWeapon.name }}<br>
-        <span>Bonus/Malus : Att: {{ equippedWeapon.attack }}, Esq: {{ equippedWeapon.dodging }}, Dég: {{ equippedWeapon.damage }}, PV: {{ equippedWeapon.hp }}</span>
-      </div>
-      <div class="final-stats">
-        <strong>Stats finales :</strong>
-        Attaque : {{ getFinalStats().attack }}<br>
-        Esquive : {{ getFinalStats().dodging }}<br>
-        Dégâts : {{ getFinalStats().damage }}<br>
-        Points de vie : {{ getFinalStats().hp }}
-      </div>
-    }
-    @if (errorMessage) {
-      <div class="validator-error">{{ errorMessage }}</div>
-    }
+
   </section>
 }
