@@ -42,6 +42,7 @@ export class HeroService {
 ///////////
 // Solution 1 : Transformation en une liste d'objets "prototype" de type Hero
 // get documents (data) from the collection using collectionData
+    this.messageService.add("HeroService: Liste des héros récupérée");
     return collectionData(heroCollection, { idField: 'id' }) as Observable<HeroInterface[]>;
   }
 
@@ -58,19 +59,22 @@ export class HeroService {
     const heroDocument = doc(this.firestore, HeroService.url + "/" + id);
 ///////////
 // Solution 1 : Transformation en un objet "prototype" de type Hero
+    this.messageService.add(`HeroService: Héros id=${id} récupéré`);
 // get documents (data) from the collection using collectionData
     return docData(heroDocument, { idField: 'id' }) as Observable<HeroInterface>;
   }
   deleteHero(id: string): Promise<void> {
 // Récupération du DocumentReference
+    this.messageService.add(`HeroService: Héros id=${id} supprimé`);
     const heroDocument = doc(this.firestore, HeroService.url + "/" + id);
 //
     return deleteDoc(heroDocument);
   }
   updateHero(hero: HeroInterface): Promise<void> {
+    this.messageService.add(`HeroService: Héros ${hero.name} mis à jour`);
     const heroDocument = doc(this.firestore, HeroService.url + '/' + hero.id);
-    // On utilise setDoc pour écraser le document avec les nouvelles valeurs
-    return setDoc(heroDocument, hero);
+    const heroJSON = HeroService.transformationToJSON(hero);
+    return setDoc(heroDocument, heroJSON, { merge: true });
   }
   addHero(hero: HeroInterface): Promise<HeroInterface> {
 
@@ -101,19 +105,15 @@ export class HeroService {
   }
 
   private static transformationToJSON(hero: HeroInterface): any {
-
-    ///////
-    // Il n'est pas nécessaire d'evnoyer l'id dans le corps du document donc suppression de cette information
-    ///////
-
-    // Solution 1 : création d'un JSON object "ad hoc" (sans la propriété id)
-    let newHeroJSON = {name: hero.name, attack: hero.attack, dodging: hero.dodging, damage: hero.damage, hp: hero.hp, idWeapon: hero.idWeapon};
-
-    // Solution 2 : création d'un JSON object en supprimant la propriété id
-    // let newHeroJSON = Object.assign({}, hero);   // Cette solution met l'id dans firebase au niveau du document
-    // delete newHeroJSON.id;
-
-    //
+    const newHeroJSON: any = {
+      name: hero.name,
+      attack: hero.attack,
+      dodging: hero.dodging,
+      damage: hero.damage,
+      hp: hero.hp
+    };
+    if (hero.idWeapon !== undefined) newHeroJSON.idWeapon = hero.idWeapon;
+    if (hero.photoURL !== undefined) newHeroJSON.photoURL = hero.photoURL;
     return newHeroJSON;
   }
 }

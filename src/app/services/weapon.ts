@@ -42,6 +42,7 @@ export class WeaponService {
 ///////////
 // Solution 1 : Transformation en une liste d'objets "prototype" de type Hero
 // get documents (data) from the collection using collectionData
+    this.messageService.add("WeaponService: Liste des armes récupérée");
     return collectionData(weaponCollection, { idField: 'id' }) as Observable<WeaponInterface[]>;
   }
 
@@ -58,6 +59,7 @@ export class WeaponService {
     const weaponDocument = doc(this.firestore, WeaponService.url + "/" + id);
 ///////////
 // Solution 1 : Transformation en un objet "prototype" de type Hero
+    this.messageService.add(`WeaponService: Arme id=${id} récupérée`);
 // get documents (data) from the collection using collectionData
     return docData(weaponDocument, { idField: 'id' }) as Observable<WeaponInterface>;
   }
@@ -65,11 +67,13 @@ export class WeaponService {
 // Récupération du DocumentReference
     const heroDocument = doc(this.firestore, WeaponService.url + "/" + id);
 //
+    this.messageService.add(`WeaponService: Arme id=${id} supprimée`);
     return deleteDoc(heroDocument);
   }
+
   updateWeapon(weapon: WeaponInterface): Promise<void> {
     const weaponDocument = doc(this.firestore, WeaponService.url + '/' + weapon.id);
-    // On utilise setDoc pour écraser le document avec les nouvelles valeurs
+    this.messageService.add(`WeaponService: Arme ${weapon.name} mise à jour`);
     return setDoc(weaponDocument, weapon);
   }
   addWeapon(weapon: WeaponInterface): Promise<WeaponInterface> {
@@ -77,6 +81,7 @@ export class WeaponService {
     // get a reference to the hero collection
     const weaponCollection = collection(this.firestore, WeaponService.url);
 
+          this.messageService.add(`WeaponService: Arme ${weapon.name} créée`);
     let heroPromise: Promise<HeroInterface> = new Promise( (resolve, reject) => {
       addDoc(weaponCollection, WeaponService.transformationToJSON(weapon)).then(
         heroDocument => { // success
@@ -93,10 +98,6 @@ export class WeaponService {
   }
 
   private static transformationToJSON(weapon: WeaponInterface): any {
-
-    ///////
-    // Il n'est pas nécessaire d'evnoyer l'id dans le corps du document donc suppression de cette information
-    ///////
 
     // Solution 1 : création d'un JSON object "ad hoc" (sans la propriété id)
     let newHeroJSON = {name: weapon.name, attack: weapon.attack, dodging: weapon.dodging, damage: weapon.damage, hp: weapon.hp};

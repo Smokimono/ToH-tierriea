@@ -26,7 +26,6 @@ export class HeroDetail implements OnInit {
   equippedWeapon: WeaponInterface | null = null;
   errorMessage: string = '';
   isDragOver: boolean = false;
-  uploadProgress: number = 0; // utilisé pour éventuelle extension
   uploading: boolean = false;
   previewUrl: string | null = null;
 
@@ -101,6 +100,20 @@ export class HeroDetail implements OnInit {
     }
   }
 
+  async unequipWeapon(): Promise<void> {
+    if (!this.hero || !this.equippedWeapon) return;
+    try {
+      await this.heroService.updateHeroWeapon(this.hero.id, null);
+      if (this.hero.idWeapon !== undefined) {
+        delete this.hero.idWeapon;
+      }
+      this.equippedWeapon = null;
+      this.errorMessage = '';
+    } catch (e) {
+      this.errorMessage = "Erreur lors du déséquipement de l'arme.";
+    }
+  }
+
   getFinalStats(): any {
     if (!this.hero) return null;
     const weapon = this.equippedWeapon;
@@ -118,7 +131,15 @@ export class HeroDetail implements OnInit {
 
   save(): void {
     if (this.hero && this.heroForm.valid) {
-      const updatedHero = { ...this.hero, ...this.heroForm.value, idWeapon: this.equippedWeapon?.id || null };
+      const { name, attack, dodging, damage, hp } = this.heroForm.value;
+      const updatedHero = {
+        id: this.hero.id,
+        name,
+        attack,
+        dodging,
+        damage,
+        hp
+      } as any;
       this.heroService.updateHero(updatedHero).then(() => this.goBack());
     } else {
       this.heroForm.markAllAsTouched();
@@ -155,7 +176,6 @@ export class HeroDetail implements OnInit {
         if (this.hero) {
           this.hero.photoURL = url;
           this.heroService.updateHeroPhoto(this.hero.id, url).catch(() => {
-            // on ignore l'erreur d'enregistrement pour ne pas bloquer l'affichage immédiat
           });
         }
         this.uploading = false;
@@ -185,7 +205,6 @@ export class HeroDetail implements OnInit {
 
   openFilePicker(input: HTMLInputElement, event?: Event): void {
     if (event) event.stopPropagation();
-    // Réinitialiser la valeur pour permettre de re-sélectionner le même fichier
     input.value = '';
     input.click();
   }

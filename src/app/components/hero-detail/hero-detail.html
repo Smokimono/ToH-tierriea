@@ -49,7 +49,7 @@
         }
         @if (pointsRestants() > 0) {<div class="points-restants">{{ pointsRestants() }} points restants à répartir</div>}
         <button type="submit" [disabled]="heroForm.invalid">Enregistrer</button>
-        <button type="button" (click)="goBack()">go back</button>
+        <button type="button" (click)="goBack()">Retour</button>
       </form>
     </div>
   </div>
@@ -64,6 +64,9 @@
           Dégâts: {{ equippedWeapon.damage }}<br>
           PV: {{ equippedWeapon.hp }}
         </span>
+        <div style="margin-top:10px;">
+          <button type="button" (click)="unequipWeapon()">Déséquiper</button>
+        </div>
       </div>
       <div class="final-stats">
         <strong>Stats finales du héro :</strong><br>
@@ -74,14 +77,17 @@
       </div>
     }
     @if (errorMessage) { <div class="validator-error">{{ errorMessage }}</div> }
-    <h3>Équiper une arme</h3>
-    <ul>
-      @for (weapon of weapons; track weapon.id) {
-        <li>
-          <span>{{ weapon.name }} (Att: {{ weapon.attack }}, Esq: {{ weapon.dodging }}, Dég: {{ weapon.damage }}, PV: {{ weapon.hp }})</span>
-          <button type="button" (click)="equipWeapon(weapon)" [disabled]="!canEquipWeapon(weapon)">Équiper</button>
-        </li>
-      }
-    </ul>
+    @if(!equippedWeapon) {
+      <h3>Équiper une arme</h3>
+      <ul>
+        @for (weapon of weapons; track weapon.id) {
+          <li>
+            <span>{{ weapon.name }} (Att: {{ weapon.attack }}, Esq: {{ weapon.dodging }}, Dég: {{ weapon.damage }}, PV: {{ weapon.hp }})</span>
+            <button type="button" (click)="equipWeapon(weapon)" [disabled]="!canEquipWeapon(weapon)">Équiper</button>
+          </li>
+        }
+      </ul>
+    }
+
   </section>
 }

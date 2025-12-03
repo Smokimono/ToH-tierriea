@@ -6,5 +6,5 @@ export interface HeroInterface {
   damage: number;
   hp: number;
   idWeapon?: string;
-  photoURL?: string; // URL de la photo du héros (optionnelle)
+  photoURL?: string; // URL de la photo du héros
 }

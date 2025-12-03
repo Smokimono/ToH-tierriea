@@ -1,16 +1,17 @@
-<p>weapon works!</p>
+<h2>My Weapons</h2>
 <input type="text" [(ngModel)]="searchTerm" placeholder="Rechercher une arme" class="search-bar" />
 <div class="sort-btns">
-  <button type="button" (click)="sortBy('attack')">Trier par Attaque</button>
-  <button type="button" (click)="sortBy('dodging')">Trier par Esquive</button>
-  <button type="button" (click)="sortBy('damage')">Trier par Dégâts</button>
-  <button type="button" (click)="sortBy('hp')">Trier par PV</button>
+  <button type="button" (click)="sortBy('attack')">Trier par Attaque desc</button>
+  <button type="button" (click)="sortBy('dodging')">Trier par Esquive desc</button>
+  <button type="button" (click)="sortBy('damage')">Trier par Dégâts desc</button>
+  <button type="button" (click)="sortBy('hp')">Trier par PV desc</button>
 </div>
 <ul class="weapons">
   @for (weapon of filteredWeapons; track weapon.id) {
     <li>
       <a routerLink="/weapondetail/{{weapon.id}}">
-        <span class="badge">{{weapon.id}}</span> {{weapon.name}}
+        <span class="badge">{{weapon.id}}</span>
+        <span class="name">{{weapon.name}}</span>
       </a>
     </li>
   }

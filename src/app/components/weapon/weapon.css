@@ -1,5 +1,67 @@
-.weapons {
+:host {
   display: block;
+  background: rgba(255, 255, 255, 0.95);
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
+  margin: 20px 0;
+}
+
+h2 {
+  font-size: 2.5rem;
+  color: #ff9800;
+  margin-bottom: 25px;
+  font-weight: 700;
+}
+
+.search-bar {
+  width: 100%;
+  max-width: 400px;
+  padding: 12px 16px;
+  margin-bottom: 20px;
+  border: 2px solid #ffe0b2;
+  border-radius: 12px;
+  font-size: 1rem;
+  background: #fff;
+  transition: all 0.3s ease;
+}
+
+.search-bar:focus {
+  outline: none;
+  border-color: #ff9800;
+  box-shadow: 0 0 0 3px rgba(255, 152, 0, 0.1);
+}
+
+.sort-btns {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.sort-btns button {
+  padding: 10px 18px;
+  border: none;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%);
+  color: #fff;
+  box-shadow: 0 3px 12px rgba(255, 152, 0, 0.25);
+  transition: all 0.3s ease;
+}
+
+.sort-btns button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 18px rgba(255, 152, 0, 0.35);
+}
+
+.weapons {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
   padding: 0;
   margin: 20px 0;
   list-style: none;
@@ -7,205 +69,145 @@
 
 .weapons li {
   display: block;
-  width: 20%;
-  background: #f4f8fb;
-  border-radius: 10px;
-  padding: 12px 18px;
-  margin-bottom: 10px;
-  box-shadow: 0 2px 8px rgba(25, 118, 210, 0.07);
+  background: linear-gradient(135deg, #fff 0%, #fff8f0 100%);
+  border-radius: 15px;
+  padding: 18px 22px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
   font-size: 16px;
-  white-space: normal;
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
 }
 
 .weapons li a {
   text-decoration: none;
-  color: #1976d2;
-  font-weight: 500;
-  font-size: 1.08rem;
+  color: #ff9800;
+  font-weight: 600;
+  font-size: 1.1rem;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 12px;
   width: 100%;
+  min-width: 0;
+}
+
+.weapons li a .badge {
+  flex-shrink: 0;
+  background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%);
+  color: #fff;
+  border-radius: 8px;
+  padding: 4px 8px;
+  font-size: 0.75rem;
+  font-weight: bold;
+  box-shadow: 0 2px 8px rgba(255, 152, 0, 0.3);
+  opacity: 0.8;
+  max-width: 80px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.weapons li a .name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
+  flex: 1;
 }
 
 .weapons li:hover {
-  box-shadow: 0 4px 16px rgba(0,0,0,0.10);
-  background: #ffe082; /* couleur différente pour les armes */
-}
-
-.badge {
-  background: #b71c1c;
-  color: #fff;
-  border-radius: 12px;
-  padding: 2px 10px;
-  font-size: 14px;
-  margin-right: 6px;
-  font-weight: bold;
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(255, 152, 0, 0.2);
+  border-color: #ff9800;
+  background: linear-gradient(135deg, #fff8f0 0%, #fff 100%);
 }
 
 .create-hero-btn {
   display: inline-block;
   margin-top: 10px;
-  padding: 8px 18px;
-  background: #fbc02d;
+  margin-bottom: 20px;
+  padding: 12px 24px;
+  background: linear-gradient(135deg, #ffd54f 0%, #ff9800 100%);
   color: #fff;
   border: none;
-  border-radius: 18px;
-  font-size: 16px;
+  border-radius: 25px;
+  font-size: 1.1rem;
+  font-weight: 600;
   cursor: pointer;
-  transition: background 0.2s;
+  box-shadow: 0 4px 15px rgba(255, 152, 0, 0.3);
 }
 
 .create-hero-btn:hover {
-  background: #f57c00;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 152, 0, 0.4);
 }
 
 .create-hero-form {
-  margin-top: 18px;
+  margin-top: 20px;
+  margin-bottom: 25px;
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 15px;
+  background: linear-gradient(135deg, #fff8f0 0%, #fff 100%);
+  border-radius: 15px;
+  padding: 20px 25px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  border: 2px solid #ffe0b2;
 }
 
 .create-hero-form input[type="text"] {
-  padding: 7px 12px;
+  flex: 1;
+  padding: 12px 16px;
+  border: 2px solid #ffe0b2;
   border-radius: 12px;
-  border: 1px solid #bdbdbd;
-  font-size: 16px;
+  font-size: 1rem;
+  background: #fff;
+  transition: all 0.3s ease;
+}
+
+.create-hero-form input[type="text"]:focus {
+  outline: none;
+  border-color: #ff9800;
+  box-shadow: 0 0 0 3px rgba(255, 152, 0, 0.1);
 }
 
 .create-hero-form button {
-  padding: 7px 16px;
+  padding: 12px 24px;
   border-radius: 12px;
   border: none;
-  background: #b71c1c;
+  background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%);
   color: #fff;
-  font-size: 15px;
+  font-size: 1rem;
+  font-weight: 600;
   cursor: pointer;
-  transition: background 0.2s;
+  box-shadow: 0 4px 15px rgba(255, 152, 0, 0.3);
+  transition: all 0.3s ease;
+}
+
+.create-hero-form button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 152, 0, 0.4);
 }
 
 .create-hero-form button:last-child {
-  background: #616161;
+  background: linear-gradient(135deg, #757575 0%, #424242 100%);
+  box-shadow: 0 4px 15px rgba(66, 66, 66, 0.3);
 }
 
-.create-hero-form button:hover {
-  opacity: 0.85;
+.create-hero-form button:last-child:hover:not(:disabled) {
+  box-shadow: 0 6px 20px rgba(66, 66, 66, 0.4);
 }
 
-.search-bar {
-  width: 100%;
-  max-width: 350px;
-  padding: 8px 14px;
-  margin-bottom: 18px;
-  border-radius: 8px;
-  border: 1px solid #bdbdbd;
-  font-size: 1rem;
-  background: #f8f8f8;
-  transition: border-color 0.2s;
-}
-.search-bar:focus {
-  border-color: #1976d2;
-  outline: none;
-}
-
-ul.weapons {
-  list-style: none;
-  padding: 0;
-  margin: 0 0 20px 0;
-}
-ul.weapons li {
-  background: #f4f8fb;
-  border-radius: 10px;
-  margin-bottom: 10px;
-  padding: 12px 18px;
-  box-shadow: 0 2px 8px rgba(25, 118, 210, 0.07);
-  display: flex;
-  align-items: center;
-}
-ul.weapons li a {
-  text-decoration: none;
-  color: #1976d2;
-  font-weight: 500;
-  font-size: 1.08rem;
-  flex: 1;
-}
-.badge {
-  background: #1976d2;
-  color: #fff;
-  border-radius: 8px;
-  padding: 3px 10px;
-  margin-right: 12px;
-  font-size: 0.95rem;
-}
-.create-hero-btn {
-  background: #e53935;
-  color: #fff;
-  border: none;
-  padding: 10px 18px;
-  border-radius: 11px;
-  font-size: 1.08rem;
-  font-weight: 500;
-  cursor: pointer;
-  margin-bottom: 18px;
-  transition: background 0.2s;
-}
-.create-hero-btn:hover {
-  background: #b71c1c;
-}
-.create-hero-form {
-  background: #fff3e0;
-  border-radius: 10px;
-  padding: 18px 22px;
-  box-shadow: 0 2px 8px rgba(229, 57, 53, 0.09);
-  margin-bottom: 18px;
-  display: flex;
-  gap: 10px;
-  align-items: center;
-}
-.create-hero-form input {
-  flex: 1;
-  padding: 8px 13px;
-  border: 1px solid #bdbdbd;
-  border-radius: 8px;
-  font-size: 1rem;
-  background: #fff;
-}
-.create-hero-form button {
-  background: #1976d2;
-  color: #fff;
-  border: none;
-  padding: 8px 16px;
-  border-radius: 8px;
-  font-size: 1rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background 0.2s;
-}
 .create-hero-form button:disabled {
-  background: #bdbdbd;
+  background: #adb5bd;
   cursor: not-allowed;
+  box-shadow: none;
+  transform: none !important;
 }
-.create-hero-form button:hover:not(:disabled) {
-  background: #1565c0;
+
+@media (max-width: 768px) {
+  .weapons {
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 15px;
+  }
 }
-.sort-btns {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 18px;
-  flex-wrap: wrap;
-}
-.sort-btns button {
-  background: #1976d2;
-  color: #fff;
-  border: none;
-  padding: 8px 16px;
-  border-radius: 8px;
-  font-size: 1rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background 0.2s;
-}
-.sort-btns button:hover {
-  background: #1565c0;
-}
+

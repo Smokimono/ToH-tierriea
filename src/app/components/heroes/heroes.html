@@ -1,16 +1,17 @@
 <h2>My Heroes</h2>
 <input type="text" [(ngModel)]="searchTerm" placeholder="Rechercher un héros" class="search-bar" />
 <div class="sort-btns">
-  <button type="button" (click)="sortBy('attack')">Trier par Attaque</button>
-  <button type="button" (click)="sortBy('dodging')">Trier par Esquive</button>
-  <button type="button" (click)="sortBy('damage')">Trier par Dégâts</button>
-  <button type="button" (click)="sortBy('hp')">Trier par PV</button>
+  <button type="button" (click)="sortBy('attack')">Trier par Attaque desc</button>
+  <button type="button" (click)="sortBy('dodging')">Trier par Esquive desc</button>
+  <button type="button" (click)="sortBy('damage')">Trier par Dégâts desc</button>
+  <button type="button" (click)="sortBy('hp')">Trier par PV desc</button>
 </div>
 <ul class="heroes">
   @for (hero of filteredHeroes; track hero.id) {
     <li>
       <a routerLink="/detail/{{hero.id}}">
-        <span class="badge">{{hero.id}}</span> {{hero.name}}
+        <span class="badge">{{hero.id}}</span>
+        <span class="name">{{hero.name}}</span>
       </a>
     </li>
   }
