@@ -1,0 +1,52 @@
+<h2>Arène</h2>
+<div class="selection">
+  <div>
+    <label>Héros 1:</label>
+    <select [(ngModel)]="hero1Id">
+      <option [ngValue]="null">-- Choisir --</option>
+      <option *ngFor="let h of heroes" [ngValue]="h.id">{{h.name}}</option>
+    </select>
+  </div>
+  <div>
+    <label>Héros 2:</label>
+    <select [(ngModel)]="hero2Id">
+      <option [ngValue]="null">-- Choisir --</option>
+      <option *ngFor="let h of heroes" [ngValue]="h.id">{{h.name}}</option>
+    </select>
+  </div>
+  <button (click)="initFight()" [disabled]="!selectedHeroesValid || inProgress">Commencer le combat</button>
+  <button (click)="reset()" [disabled]="inProgress">Réinitialiser</button>
+</div>
+
+<div *ngIf="combatant1 && combatant2" class="combat">
+  <div class="combatant" [class.winner]="finished && winner === combatant1">
+    <h3>{{combatant1.hero.name}}</h3>
+    <p>Arme: {{combatant1.weapon?.name || 'Aucune'}}</p>
+    <p>HP: {{combatant1.currentHp}}</p>
+    <p>
+      ATK: {{ computeAttackValue(combatant1) }} |
+      ESQ: {{ computeDodgingValue(combatant1) }} |
+      DMG: {{ computeDamageValue(combatant1) }}
+    </p>
+    <ul class="log">
+      <li *ngFor="let l of combatant1.log">{{l}}</li>
+    </ul>
+  </div>
+  <div class="combatant" [class.winner]="finished && winner === combatant2">
+    <h3>{{combatant2.hero.name}}</h3>
+    <p>Arme: {{combatant2.weapon?.name || 'Aucune'}}</p>
+    <p>HP: {{combatant2.currentHp}}</p>
+    <p>
+      ATK: {{ computeAttackValue(combatant2) }} |
+      ESQ: {{ computeDodgingValue(combatant2) }} |
+      DMG: {{ computeDamageValue(combatant2) }}
+    </p>
+    <ul class="log">
+      <li *ngFor="let l of combatant2.log">{{l}}</li>
+    </ul>
+  </div>
+</div>
+
+<div *ngIf="finished && winner">
+  <h2>Vainqueur: {{winner.hero.name}}</h2>
+</div>
